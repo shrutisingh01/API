@@ -41,7 +41,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyHolder>{
             public void onClick(View view) {
 
 
-                showPopup(news.getText());
+//                showPopup(news.getText());
             }
         });
         holder.tvHeadline.setText(news.getHeadLine());
@@ -56,19 +56,19 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyHolder>{
 
 
     public void showPopup(String text) {
-        View popupView = LayoutInflater.from(context).inflate(R.layout.popup_, null);
-        final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        Button btnDismiss = (Button) popupView.findViewById(R.id.btn_dismiss);
-        TextView textView = popupView.findViewById(R.id.text);
-        textView.setText(text);
-        btnDismiss.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
-
-        popupWindow.showAsDropDown(popupView, 0, 0);
+//        View popupView = LayoutInflater.from(context).inflate(R.layout.popup_, null);
+//        final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+//        Button btnDismiss = (Button) popupView.findViewById(R.id.btn_dismiss);
+//        TextView textView = popupView.findViewById(R.id.text);
+//        textView.setText(text);
+//        btnDismiss.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                popupWindow.dismiss();
+//            }
+//        });
+//
+//        popupWindow.showAsDropDown(popupView, 0, 0);
     }
 
 
