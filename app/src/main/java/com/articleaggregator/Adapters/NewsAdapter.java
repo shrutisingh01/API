@@ -1,87 +1,70 @@
 package com.articleaggregator.Adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.PopupWindow;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.articleaggregator.Article;
 import com.articleaggregator.POJO.NewsPOJO;
 import com.articleaggregator.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyHolder>{
-
-    Context context;
-    ArrayList<NewsPOJO> arrayList;
-    public NewsAdapter(Context context,ArrayList<NewsPOJO> arrayList){
-        this.context = context;
-        this.arrayList =arrayList;
-
+public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
+    private List<Article> articleArrayList;
+    private Context context;
+    private OnRecyclerViewItemClickListener onRecyclerViewItemClickListener;
+    public NewsAdapter(List<Article> articleArrayList) {
+        this.articleArrayList = articleArrayList;
     }
 
-    @NonNull
-    @Override
-    public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.news_holder,null);
-        return new MyHolder(v);
-    }
 
     @Override
-    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
-        final NewsPOJO news = arrayList.get(position);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-//                showPopup(news.getText());
-            }
-        });
-        holder.tvHeadline.setText(news.getHeadLine());
-        holder.tvDate.setText(news.getDate());
-//        holder.tvPara.setText(news.getText());
+    public NewsAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.news_holder, viewGroup, false);
+        return new NewsAdapter.ViewHolder(view);
     }
-
+    @Override
+    public void onBindViewHolder(NewsAdapter.ViewHolder viewHolder, int position) {
+        final Article articleModel = articleArrayList.get(position);
+        if(!TextUtils.isEmpty(articleModel.getTitle())) {
+            viewHolder.titleText.setText(articleModel.getTitle());
+        }
+        if(!TextUtils.isEmpty(articleModel.getDescription())) {
+            viewHolder.descriptionText.setText(articleModel.getDescription());
+        }
+        viewHolder.artilceAdapterParentLinear.setTag(articleModel);
+    }
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return articleArrayList.size();
     }
 
 
-    public void showPopup(String text) {
-//        View popupView = LayoutInflater.from(context).inflate(R.layout.popup_, null);
-//        final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-//        Button btnDismiss = (Button) popupView.findViewById(R.id.btn_dismiss);
-//        TextView textView = popupView.findViewById(R.id.text);
-//        textView.setText(text);
-//        btnDismiss.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                popupWindow.dismiss();
-//            }
-//        });
-//
-//        popupWindow.showAsDropDown(popupView, 0, 0);
-    }
-
-
-
-    public class MyHolder extends  RecyclerView.ViewHolder{
-
-        TextView tvHeadline, tvDate, tvPara;
-
-        public MyHolder(View v) {
-            super(v);
-            tvHeadline = v.findViewById(R.id.tvHeadline);
-            tvDate = v.findViewById(R.id.tvDate);
-            tvPara = v.findViewById(R.id.tvPara);
+    class ViewHolder extends RecyclerView.ViewHolder{
+        private TextView titleText;
+        private TextView descriptionText;
+        private LinearLayout artilceAdapterParentLinear;
+        ViewHolder(View view) {
+            super(view);
+            titleText = view.findViewById(R.id.article_adapter_tv_title);
+            descriptionText = view.findViewById(R.id.article_adapter_tv_description);
+            artilceAdapterParentLinear = view.findViewById(R.id.article_adapter_ll_parent);
+            artilceAdapterParentLinear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (onRecyclerViewItemClickListener != null) {
+                        onRecyclerViewItemClickListener.onItemClick(getAdapterPosition(), view);
+                    }
+                }
+            });
         }
     }
-}
+    public void setOnRecyclerViewItemClickListener(NewsPOJO onRecyclerViewItemClickListener) {
+        this.onRecyclerViewItemClickListener = (OnRecyclerViewItemClickListener) onRecyclerViewItemClickListener;
+    }}
